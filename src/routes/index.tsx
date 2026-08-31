@@ -67,6 +67,12 @@ function Index() {
 
   const line = LINES[activeIndex]!;
 
+  const unvisitedBg = useMemo(() => tint(line.colour, 0.72), [line.colour]);
+  const unvisitedText = useMemo(
+    () => bestContrast(unvisitedBg, line.colour, line.textColour),
+    [unvisitedBg, line.colour, line.textColour],
+  );
+
   const toggle = (station: string) => {
     setFlashed(station);
     window.setTimeout(() => setFlashed((s) => (s === station ? null : s)), 200);
