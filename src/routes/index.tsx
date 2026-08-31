@@ -86,9 +86,6 @@ function Index() {
     [line],
   );
   const lineVisited = lineStations.filter((s) => visited.has(s)).length;
-  const filtered = lineStations.filter((s) =>
-    s.toLowerCase().includes(query.trim().toLowerCase()),
-  );
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-[480px] bg-white pb-24 font-sans antialiased">
