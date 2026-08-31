@@ -149,7 +149,7 @@ function Index() {
       </section>
 
       <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
-        {filtered.map((station) => {
+        {lineStations.map((station) => {
           const isVisited = visited.has(station);
           return (
             <li key={station} style={{ borderBottom: "1px solid #FFFFFF" }}>
@@ -172,32 +172,31 @@ function Index() {
                 </span>
                 <span
                   className="flex flex-1 items-center justify-between py-3 pr-5 pl-4 transition-colors duration-150"
-                  style={{ backgroundColor: flashed === station ? "#E8E0BE" : "#F7F3DD" }}
+                  style={{
+                    backgroundColor: line.colour,
+                    color: line.textColour,
+                    filter: flashed === station ? "brightness(0.92)" : "none",
+                  }}
                 >
-                  <span className="text-[15px] font-medium tracking-tight" style={{ color: "#1B4CA1" }}>
-                    {isVisited ? "Visited" : "Not visited"}
+                  <span className="text-[15px] font-medium tracking-tight" style={{ color: line.textColour }}>
+                    {isVisited ? "Visited" : null}
                   </span>
                   <span
                     className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                     style={
                       isVisited
-                        ? { backgroundColor: "#1B4CA1" }
-                        : { border: "2px solid #1B4CA1" }
+                        ? { backgroundColor: line.textColour }
+                        : { border: `2px solid ${line.textColour}` }
                     }
                     aria-hidden="true"
                   >
-                    {isVisited && <Check size={14} strokeWidth={3} color="#F7F3DD" />}
+                    {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
                   </span>
                 </span>
               </button>
             </li>
           );
         })}
-        {filtered.length === 0 && (
-          <li className="px-5 py-8 text-center text-[15px] text-neutral-500">
-            No stations match “{query}”.
-          </li>
-        )}
       </ul>
 
       <div
