@@ -140,7 +140,7 @@ function Index() {
       </nav>
 
       <section
-        className="px-5 py-3"
+        className="px-5 py-6"
         style={{ backgroundColor: line.colour, color: line.textColour }}
       >
         <div className="flex items-baseline justify-between">
@@ -149,15 +149,15 @@ function Index() {
             {lineVisited}/{lineStations.length} visited
           </span>
         </div>
-        <div className="relative mt-3 h-2 w-full rounded-full bg-white/35">
+        <div className="relative mt-5 h-3 w-full rounded-full bg-white/35">
           <div
             className="h-full overflow-hidden rounded-full bg-white/90 transition-all duration-300"
             style={{ width: `${lineProgress}%` }}
           />
           <span
             aria-hidden="true"
-            className="absolute top-1/2 h-5 w-12 -translate-x-1/2 -translate-y-1/2 transition-[left] duration-300 motion-reduce:transition-none"
-            style={{ left: `clamp(24px, ${lineProgress}%, calc(100% - 24px))` }}
+            className="absolute top-1/2 h-[30px] w-[72px] -translate-x-1/2 -translate-y-1/2 transition-[left] duration-300 motion-reduce:transition-none"
+            style={{ left: `clamp(36px, ${lineProgress}%, calc(100% - 36px))` }}
           >
             <img
               src={tubeCar.url}
