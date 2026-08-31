@@ -109,10 +109,7 @@ function Index() {
             <button
               key={l.name}
               type="button"
-              onClick={() => {
-                setActiveIndex(i);
-                setQuery("");
-              }}
+              onClick={() => setActiveIndex(i)}
               aria-current={active ? "true" : undefined}
               className="h-10 shrink-0 rounded-lg px-3 text-[14px] font-bold tracking-tight transition-transform active:scale-95"
               style={
