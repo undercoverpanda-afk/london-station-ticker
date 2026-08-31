@@ -39,7 +39,6 @@ function Index() {
   const [visited, setVisited] = useState<Set<string>>(new Set());
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [query, setQuery] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [flashed, setFlashed] = useState<string | null>(null);
 
