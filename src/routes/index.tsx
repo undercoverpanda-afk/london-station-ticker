@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { LINES, ALL_STATIONS } from "@/data/lines";
+import { bestContrast, tint } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -65,6 +66,12 @@ function Index() {
   }, [visited, hydrated]);
 
   const line = LINES[activeIndex]!;
+
+  const unvisitedBg = useMemo(() => tint(line.colour, 0.72), [line.colour]);
+  const unvisitedText = useMemo(
+    () => bestContrast(unvisitedBg, line.colour, line.textColour),
+    [unvisitedBg, line.colour, line.textColour],
+  );
 
   const toggle = (station: string) => {
     setFlashed(station);
@@ -158,14 +165,12 @@ function Index() {
                 aria-pressed={isVisited}
                 onClick={() => toggle(station)}
                 className="flex min-h-16 w-full text-left transition-transform duration-150 active:scale-[0.985]"
-                style={{ opacity: isVisited ? 0.45 : 1 }}
               >
                 <span
                   className="flex w-[58%] items-center py-3 pr-3 pl-5 text-[17px] font-bold tracking-tight"
                   style={{
-                    backgroundColor: line.colour,
-                    color: line.textColour,
-                    textDecoration: isVisited ? "line-through" : "none",
+                    backgroundColor: isVisited ? line.colour : unvisitedBg,
+                    color: isVisited ? line.textColour : unvisitedText,
                   }}
                 >
                   {station}
@@ -173,12 +178,15 @@ function Index() {
                 <span
                   className="flex flex-1 items-center justify-between py-3 pr-5 pl-4 transition-colors duration-150"
                   style={{
-                    backgroundColor: line.colour,
-                    color: line.textColour,
+                    backgroundColor: isVisited ? line.colour : unvisitedBg,
+                    color: isVisited ? line.textColour : unvisitedText,
                     filter: flashed === station ? "brightness(0.92)" : "none",
                   }}
                 >
-                  <span className="text-[15px] font-medium tracking-tight" style={{ color: line.textColour }}>
+                  <span
+                    className="text-[15px] font-medium tracking-tight"
+                    style={{ color: isVisited ? line.textColour : unvisitedText }}
+                  >
                     {isVisited ? "Visited" : null}
                   </span>
                   <span
@@ -186,7 +194,7 @@ function Index() {
                     style={
                       isVisited
                         ? { backgroundColor: line.textColour }
-                        : { border: `2px solid ${line.textColour}` }
+                        : { border: `2px solid ${unvisitedText}` }
                     }
                     aria-hidden="true"
                   >
