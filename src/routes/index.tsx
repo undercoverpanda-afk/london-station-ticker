@@ -200,17 +200,9 @@ function Index() {
       </ul>
 
       <div
-        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center gap-3 border-t px-4 py-3"
+        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center justify-end border-t px-4 py-3"
         style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
       >
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={`Search ${line.name} stations`}
-          aria-label={`Search ${line.name} stations`}
-          className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-[15px] tracking-tight outline-none focus:border-neutral-500"
-        />
         <button
           type="button"
           onClick={() => setConfirmOpen(true)}
