@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { LINES, ALL_STATIONS } from "@/data/lines";
 import { bestContrast, tint } from "@/lib/utils";
+import tubeCar from "@/assets/tube-car-pixel.svg.asset.json";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -93,6 +94,9 @@ function Index() {
     [line],
   );
   const lineVisited = lineStations.filter((s) => visited.has(s)).length;
+  const lineProgress = lineStations.length
+    ? (lineVisited / lineStations.length) * 100
+    : 0;
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-[480px] bg-white pb-24 font-sans antialiased">
@@ -145,13 +149,22 @@ function Index() {
             {lineVisited}/{lineStations.length} visited
           </span>
         </div>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/35">
+        <div className="relative mt-3 h-2 w-full rounded-full bg-white/35">
           <div
-            className="h-full rounded-full bg-white/90 transition-all duration-300"
-            style={{
-              width: `${lineStations.length ? (lineVisited / lineStations.length) * 100 : 0}%`,
-            }}
+            className="h-full overflow-hidden rounded-full bg-white/90 transition-all duration-300"
+            style={{ width: `${lineProgress}%` }}
           />
+          <span
+            aria-hidden="true"
+            className="absolute top-1/2 h-5 w-12 -translate-x-1/2 -translate-y-1/2 transition-[left] duration-300 motion-reduce:transition-none"
+            style={{ left: `clamp(24px, ${lineProgress}%, calc(100% - 24px))` }}
+          >
+            <img
+              src={tubeCar.url}
+              alt=""
+              className="h-full w-full scale-x-[-1] object-contain [image-rendering:pixelated]"
+            />
+          </span>
         </div>
       </section>
 
