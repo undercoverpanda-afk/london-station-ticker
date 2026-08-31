@@ -39,7 +39,6 @@ function Index() {
   const [visited, setVisited] = useState<Set<string>>(new Set());
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [query, setQuery] = useState("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [flashed, setFlashed] = useState<string | null>(null);
 
@@ -87,9 +86,6 @@ function Index() {
     [line],
   );
   const lineVisited = lineStations.filter((s) => visited.has(s)).length;
-  const filtered = lineStations.filter((s) =>
-    s.toLowerCase().includes(query.trim().toLowerCase()),
-  );
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-[480px] bg-white pb-24 font-sans antialiased">
@@ -113,10 +109,7 @@ function Index() {
             <button
               key={l.name}
               type="button"
-              onClick={() => {
-                setActiveIndex(i);
-                setQuery("");
-              }}
+              onClick={() => setActiveIndex(i)}
               aria-current={active ? "true" : undefined}
               className="h-10 shrink-0 rounded-lg px-3 text-[14px] font-bold tracking-tight transition-transform active:scale-95"
               style={
@@ -156,7 +149,7 @@ function Index() {
       </section>
 
       <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
-        {filtered.map((station) => {
+        {lineStations.map((station) => {
           const isVisited = visited.has(station);
           return (
             <li key={station} style={{ borderBottom: "1px solid #FFFFFF" }}>
@@ -179,46 +172,37 @@ function Index() {
                 </span>
                 <span
                   className="flex flex-1 items-center justify-between py-3 pr-5 pl-4 transition-colors duration-150"
-                  style={{ backgroundColor: flashed === station ? "#E8E0BE" : "#F7F3DD" }}
+                  style={{
+                    backgroundColor: line.colour,
+                    color: line.textColour,
+                    filter: flashed === station ? "brightness(0.92)" : "none",
+                  }}
                 >
-                  <span className="text-[15px] font-medium tracking-tight" style={{ color: "#1B4CA1" }}>
-                    {isVisited ? "Visited" : "Not visited"}
+                  <span className="text-[15px] font-medium tracking-tight" style={{ color: line.textColour }}>
+                    {isVisited ? "Visited" : null}
                   </span>
                   <span
                     className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                     style={
                       isVisited
-                        ? { backgroundColor: "#1B4CA1" }
-                        : { border: "2px solid #1B4CA1" }
+                        ? { backgroundColor: line.textColour }
+                        : { border: `2px solid ${line.textColour}` }
                     }
                     aria-hidden="true"
                   >
-                    {isVisited && <Check size={14} strokeWidth={3} color="#F7F3DD" />}
+                    {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
                   </span>
                 </span>
               </button>
             </li>
           );
         })}
-        {filtered.length === 0 && (
-          <li className="px-5 py-8 text-center text-[15px] text-neutral-500">
-            No stations match “{query}”.
-          </li>
-        )}
       </ul>
 
       <div
-        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center gap-3 border-t px-4 py-3"
+        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center justify-end border-t px-4 py-3"
         style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
       >
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={`Search ${line.name} stations`}
-          aria-label={`Search ${line.name} stations`}
-          className="h-11 flex-1 rounded-lg border border-neutral-300 bg-white px-3 text-[15px] tracking-tight outline-none focus:border-neutral-500"
-        />
         <button
           type="button"
           onClick={() => setConfirmOpen(true)}
