@@ -166,6 +166,12 @@ function Index() {
             />
           </span>
         </div>
+        {lineProgress === 100 && (
+          <div className="mt-4 rounded-xl bg-white/20 px-4 py-3 text-[15px] font-semibold leading-snug tracking-tight backdrop-blur-sm">
+            Congratulations, you&apos;ve reached the end of the line. This service
+            terminates here. All change please.
+          </div>
+        )}
       </section>
 
       <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
