@@ -38,9 +38,25 @@ export const Route = createFileRoute("/")({
 });
 
 const STORAGE_KEY = "tube-tracker-visited";
+const NOTES_KEY = "tube-tracker-notes";
+
+function formatDate(iso: string) {
+  if (!iso) return "Date not recorded";
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return "Date not recorded";
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  return `${d} ${months[m - 1]} ${y}`;
+}
 
 function Index() {
   const [visited, setVisited] = useState<Set<string>>(new Set());
+  const [notes, setNotes] = useState<Record<string, StationNote>>({});
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [dialogStation, setDialogStation] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -53,6 +69,12 @@ function Index() {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) setVisited(new Set(parsed as string[]));
       }
+      const rawNotes = localStorage.getItem(NOTES_KEY);
+      if (rawNotes) {
+        const parsed = JSON.parse(rawNotes);
+        if (parsed && typeof parsed === "object")
+          setNotes(parsed as Record<string, StationNote>);
+      }
     } catch {
       /* ignore */
     }
@@ -63,10 +85,11 @@ function Index() {
     if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...visited]));
+      localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
     } catch {
       /* ignore */
     }
-  }, [visited, hydrated]);
+  }, [visited, notes, hydrated]);
 
   const line = LINES[activeIndex]!;
 
@@ -79,7 +102,40 @@ function Index() {
   const toggle = (station: string) => {
     setFlashed(station);
     window.setTimeout(() => setFlashed((s) => (s === station ? null : s)), 200);
+    const wasVisited = visited.has(station);
     setVisited((prev) => {
+      const next = new Set(prev);
+      if (wasVisited) next.delete(station);
+      else next.add(station);
+      return next;
+    });
+    if (wasVisited) {
+      setExpanded((prev) => {
+        const next = new Set(prev);
+        next.delete(station);
+        return next;
+      });
+      return;
+    }
+    if (notes[station]?.submitted) {
+      toast("Previous note restored");
+      return;
+    }
+    setDialogStation(station);
+    setDialogOpen(true);
+  };
+
+  const saveNote = (station: string, note: StationNote) => {
+    setNotes((prev) => ({ ...prev, [station]: note }));
+  };
+
+  const openNote = (station: string) => {
+    setDialogStation(station);
+    setDialogOpen(true);
+  };
+
+  const toggleExpanded = (station: string) => {
+    setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(station)) next.delete(station);
       else next.add(station);
