@@ -385,6 +385,16 @@ function Index() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <StationNoteDialog
+        station={dialogStation}
+        note={dialogStation ? notes[dialogStation] : undefined}
+        lineColour={line.colour}
+        lineTextColour={line.textColour}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSave={saveNote}
+      />
     </main>
   );
 }
