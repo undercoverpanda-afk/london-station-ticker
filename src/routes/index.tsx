@@ -252,31 +252,16 @@ function Index() {
               >
                 <button
                   type="button"
-                  aria-pressed={isVisited}
                   onClick={() => toggle(station)}
                   className="flex flex-1 items-center gap-3 py-3 pr-3 pl-5 text-left transition-transform duration-150 active:scale-[0.985]"
                 >
                   <span className="flex-1 text-[17px] font-bold tracking-tight">
                     {station}
                   </span>
-                  {isVisited && (
-                    <span className="text-[15px] font-medium tracking-tight">Visited</span>
-                  )}
-                  <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                    style={
-                      isVisited
-                        ? { backgroundColor: line.textColour }
-                        : { border: `2px solid ${unvisitedText}` }
-                    }
-                    aria-hidden="true"
-                  >
-                    {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
-                  </span>
                 </button>
 
                 {isVisited && (
-                  <div className="flex items-center gap-1 pr-3 pl-1">
+                  <div className="flex items-center gap-1 pr-2 pl-1">
                     <button
                       type="button"
                       onClick={() => openNote(station)}
@@ -305,6 +290,28 @@ function Index() {
                     )}
                   </div>
                 )}
+
+                <button
+                  type="button"
+                  aria-pressed={isVisited}
+                  onClick={() => toggle(station)}
+                  className="flex items-center gap-3 py-3 pr-5 pl-3 text-left transition-transform duration-150 active:scale-[0.985]"
+                >
+                  {isVisited && (
+                    <span className="text-[15px] font-medium tracking-tight">Visited</span>
+                  )}
+                  <span
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                    style={
+                      isVisited
+                        ? { backgroundColor: line.textColour }
+                        : { border: `2px solid ${unvisitedText}` }
+                    }
+                    aria-hidden="true"
+                  >
+                    {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
+                  </span>
+                </button>
               </div>
 
               {hasNote && (
