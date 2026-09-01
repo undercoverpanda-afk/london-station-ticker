@@ -235,37 +235,33 @@ function Index() {
       <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
         {lineStations.map((station) => {
           const isVisited = visited.has(station);
+          const note = notes[station];
+          const hasNote = isVisited && !!note?.submitted;
+          const isOpen = expanded.has(station);
+          const rowBg = isVisited ? line.colour : unvisitedBg;
+          const rowFg = isVisited ? line.textColour : unvisitedText;
           return (
             <li key={station} style={{ borderBottom: "1px solid #FFFFFF" }}>
-              <button
-                type="button"
-                aria-pressed={isVisited}
-                onClick={() => toggle(station)}
-                className="flex min-h-16 w-full text-left transition-transform duration-150 active:scale-[0.985]"
+              <div
+                className="flex min-h-16 w-full items-stretch"
+                style={{
+                  backgroundColor: rowBg,
+                  color: rowFg,
+                  filter: flashed === station ? "brightness(0.92)" : "none",
+                }}
               >
-                <span
-                  className="flex w-[58%] items-center py-3 pr-3 pl-5 text-[17px] font-bold tracking-tight"
-                  style={{
-                    backgroundColor: isVisited ? line.colour : unvisitedBg,
-                    color: isVisited ? line.textColour : unvisitedText,
-                  }}
+                <button
+                  type="button"
+                  aria-pressed={isVisited}
+                  onClick={() => toggle(station)}
+                  className="flex flex-1 items-center gap-3 py-3 pr-3 pl-5 text-left transition-transform duration-150 active:scale-[0.985]"
                 >
-                  {station}
-                </span>
-                <span
-                  className="flex flex-1 items-center justify-between py-3 pr-5 pl-4 transition-colors duration-150"
-                  style={{
-                    backgroundColor: isVisited ? line.colour : unvisitedBg,
-                    color: isVisited ? line.textColour : unvisitedText,
-                    filter: flashed === station ? "brightness(0.92)" : "none",
-                  }}
-                >
-                  <span
-                    className="text-[15px] font-medium tracking-tight"
-                    style={{ color: isVisited ? line.textColour : unvisitedText }}
-                  >
-                    {isVisited ? "Visited" : null}
+                  <span className="flex-1 text-[17px] font-bold tracking-tight">
+                    {station}
                   </span>
+                  {isVisited && (
+                    <span className="text-[15px] font-medium tracking-tight">Visited</span>
+                  )}
                   <span
                     className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                     style={
@@ -277,8 +273,78 @@ function Index() {
                   >
                     {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
                   </span>
-                </span>
-              </button>
+                </button>
+
+                {isVisited && (
+                  <div className="flex items-center gap-1 pr-3 pl-1">
+                    <button
+                      type="button"
+                      onClick={() => openNote(station)}
+                      aria-label={`Note for ${station}`}
+                      className="flex h-11 w-9 items-center justify-center"
+                      style={{ color: rowFg }}
+                    >
+                      <NotebookPen size={18} strokeWidth={2.2} />
+                    </button>
+                    {hasNote && (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpanded(station)}
+                        aria-expanded={isOpen}
+                        aria-label={`${isOpen ? "Hide" : "Show"} note for ${station}`}
+                        className="flex h-11 w-9 items-center justify-center"
+                        style={{ color: rowFg }}
+                      >
+                        <ChevronDown
+                          size={18}
+                          strokeWidth={2.2}
+                          className="transition-transform duration-200"
+                          style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
+                        />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {hasNote && (
+                <div
+                  className="grid transition-[grid-template-rows] duration-200 ease-out"
+                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                >
+                  <div className="overflow-hidden">
+                    <div
+                      className="px-5 py-4"
+                      style={{
+                        backgroundColor: unvisitedBg,
+                        color: unvisitedText,
+                        borderLeft: `3px solid ${line.colour}`,
+                      }}
+                    >
+                      <p className="text-[13px] font-semibold tracking-tight">
+                        {formatDate(note!.visitedOn)}
+                      </p>
+                      {note!.reason ? (
+                        <p className="mt-1.5 text-[15px] leading-snug whitespace-pre-wrap">
+                          {note!.reason}
+                        </p>
+                      ) : (
+                        <p className="mt-1.5 text-[15px] italic opacity-80">
+                          No reason recorded
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => openNote(station)}
+                        className="mt-3 h-9 rounded-lg px-3 text-[14px] font-bold tracking-tight"
+                        style={{ backgroundColor: line.colour, color: line.textColour }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           );
         })}
