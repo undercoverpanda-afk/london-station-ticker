@@ -373,7 +373,13 @@ function Index() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setVisited(new Set())}>
+            <AlertDialogAction
+              onClick={() => {
+                setVisited(new Set());
+                setNotes({});
+                setExpanded(new Set());
+              }}
+            >
               Reset all
             </AlertDialogAction>
           </AlertDialogFooter>
