@@ -86,7 +86,7 @@ export function StationNoteDialog({
         }}
       >
         <DialogContent
-          showCloseButton={false}
+          
           className="max-w-[480px] gap-0 overflow-hidden rounded-t-2xl p-0 max-sm:top-auto max-sm:bottom-0 max-sm:translate-y-0 max-sm:rounded-b-none sm:rounded-2xl"
         >
           <div
