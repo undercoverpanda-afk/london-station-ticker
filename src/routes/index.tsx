@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, ChevronDown, NotebookPen } from "lucide-react";
+import { toast } from "sonner";
 import { LINES, ALL_STATIONS } from "@/data/lines";
 import { bestContrast, tint } from "@/lib/utils";
 import tubeCar from "@/assets/tube-car-pixel.svg.asset.json";
+import { StationNoteDialog, type StationNote } from "@/components/StationNoteDialog";
 import {
   AlertDialog,
   AlertDialogAction,
