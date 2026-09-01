@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, ChevronDown, NotebookPen } from "lucide-react";
+import { toast } from "sonner";
 import { LINES, ALL_STATIONS } from "@/data/lines";
 import { bestContrast, tint } from "@/lib/utils";
 import tubeCar from "@/assets/tube-car-pixel.svg.asset.json";
+import { StationNoteDialog, type StationNote } from "@/components/StationNoteDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,9 +38,25 @@ export const Route = createFileRoute("/")({
 });
 
 const STORAGE_KEY = "tube-tracker-visited";
+const NOTES_KEY = "tube-tracker-notes";
+
+function formatDate(iso: string) {
+  if (!iso) return "Date not recorded";
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return "Date not recorded";
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  return `${d} ${months[m - 1]} ${y}`;
+}
 
 function Index() {
   const [visited, setVisited] = useState<Set<string>>(new Set());
+  const [notes, setNotes] = useState<Record<string, StationNote>>({});
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [dialogStation, setDialogStation] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -51,6 +69,12 @@ function Index() {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) setVisited(new Set(parsed as string[]));
       }
+      const rawNotes = localStorage.getItem(NOTES_KEY);
+      if (rawNotes) {
+        const parsed = JSON.parse(rawNotes);
+        if (parsed && typeof parsed === "object")
+          setNotes(parsed as Record<string, StationNote>);
+      }
     } catch {
       /* ignore */
     }
@@ -61,10 +85,11 @@ function Index() {
     if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...visited]));
+      localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
     } catch {
       /* ignore */
     }
-  }, [visited, hydrated]);
+  }, [visited, notes, hydrated]);
 
   const line = LINES[activeIndex]!;
 
@@ -77,7 +102,40 @@ function Index() {
   const toggle = (station: string) => {
     setFlashed(station);
     window.setTimeout(() => setFlashed((s) => (s === station ? null : s)), 200);
+    const wasVisited = visited.has(station);
     setVisited((prev) => {
+      const next = new Set(prev);
+      if (wasVisited) next.delete(station);
+      else next.add(station);
+      return next;
+    });
+    if (wasVisited) {
+      setExpanded((prev) => {
+        const next = new Set(prev);
+        next.delete(station);
+        return next;
+      });
+      return;
+    }
+    if (notes[station]?.submitted) {
+      toast("Previous note restored");
+      return;
+    }
+    setDialogStation(station);
+    setDialogOpen(true);
+  };
+
+  const saveNote = (station: string, note: StationNote) => {
+    setNotes((prev) => ({ ...prev, [station]: note }));
+  };
+
+  const openNote = (station: string) => {
+    setDialogStation(station);
+    setDialogOpen(true);
+  };
+
+  const toggleExpanded = (station: string) => {
+    setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(station)) next.delete(station);
       else next.add(station);
@@ -177,37 +235,33 @@ function Index() {
       <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
         {lineStations.map((station) => {
           const isVisited = visited.has(station);
+          const note = notes[station];
+          const hasNote = isVisited && !!note?.submitted;
+          const isOpen = expanded.has(station);
+          const rowBg = isVisited ? line.colour : unvisitedBg;
+          const rowFg = isVisited ? line.textColour : unvisitedText;
           return (
             <li key={station} style={{ borderBottom: "1px solid #FFFFFF" }}>
-              <button
-                type="button"
-                aria-pressed={isVisited}
-                onClick={() => toggle(station)}
-                className="flex min-h-16 w-full text-left transition-transform duration-150 active:scale-[0.985]"
+              <div
+                className="flex min-h-16 w-full items-stretch"
+                style={{
+                  backgroundColor: rowBg,
+                  color: rowFg,
+                  filter: flashed === station ? "brightness(0.92)" : "none",
+                }}
               >
-                <span
-                  className="flex w-[58%] items-center py-3 pr-3 pl-5 text-[17px] font-bold tracking-tight"
-                  style={{
-                    backgroundColor: isVisited ? line.colour : unvisitedBg,
-                    color: isVisited ? line.textColour : unvisitedText,
-                  }}
+                <button
+                  type="button"
+                  aria-pressed={isVisited}
+                  onClick={() => toggle(station)}
+                  className="flex flex-1 items-center gap-3 py-3 pr-3 pl-5 text-left transition-transform duration-150 active:scale-[0.985]"
                 >
-                  {station}
-                </span>
-                <span
-                  className="flex flex-1 items-center justify-between py-3 pr-5 pl-4 transition-colors duration-150"
-                  style={{
-                    backgroundColor: isVisited ? line.colour : unvisitedBg,
-                    color: isVisited ? line.textColour : unvisitedText,
-                    filter: flashed === station ? "brightness(0.92)" : "none",
-                  }}
-                >
-                  <span
-                    className="text-[15px] font-medium tracking-tight"
-                    style={{ color: isVisited ? line.textColour : unvisitedText }}
-                  >
-                    {isVisited ? "Visited" : null}
+                  <span className="flex-1 text-[17px] font-bold tracking-tight">
+                    {station}
                   </span>
+                  {isVisited && (
+                    <span className="text-[15px] font-medium tracking-tight">Visited</span>
+                  )}
                   <span
                     className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
                     style={
@@ -219,8 +273,78 @@ function Index() {
                   >
                     {isVisited && <Check size={14} strokeWidth={3} color={line.colour} />}
                   </span>
-                </span>
-              </button>
+                </button>
+
+                {isVisited && (
+                  <div className="flex items-center gap-1 pr-3 pl-1">
+                    <button
+                      type="button"
+                      onClick={() => openNote(station)}
+                      aria-label={`Note for ${station}`}
+                      className="flex h-11 w-9 items-center justify-center"
+                      style={{ color: rowFg }}
+                    >
+                      <NotebookPen size={18} strokeWidth={2.2} />
+                    </button>
+                    {hasNote && (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpanded(station)}
+                        aria-expanded={isOpen}
+                        aria-label={`${isOpen ? "Hide" : "Show"} note for ${station}`}
+                        className="flex h-11 w-9 items-center justify-center"
+                        style={{ color: rowFg }}
+                      >
+                        <ChevronDown
+                          size={18}
+                          strokeWidth={2.2}
+                          className="transition-transform duration-200"
+                          style={{ transform: isOpen ? "rotate(180deg)" : "none" }}
+                        />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {hasNote && (
+                <div
+                  className="grid transition-[grid-template-rows] duration-200 ease-out"
+                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                >
+                  <div className="overflow-hidden">
+                    <div
+                      className="px-5 py-4"
+                      style={{
+                        backgroundColor: unvisitedBg,
+                        color: unvisitedText,
+                        borderLeft: `3px solid ${line.colour}`,
+                      }}
+                    >
+                      <p className="text-[13px] font-semibold tracking-tight">
+                        {formatDate(note!.visitedOn)}
+                      </p>
+                      {note!.reason ? (
+                        <p className="mt-1.5 text-[15px] leading-snug whitespace-pre-wrap">
+                          {note!.reason}
+                        </p>
+                      ) : (
+                        <p className="mt-1.5 text-[15px] italic opacity-80">
+                          No reason recorded
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => openNote(station)}
+                        className="mt-3 h-9 rounded-lg px-3 text-[14px] font-bold tracking-tight"
+                        style={{ backgroundColor: line.colour, color: line.textColour }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           );
         })}
@@ -249,12 +373,28 @@ function Index() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setVisited(new Set())}>
+            <AlertDialogAction
+              onClick={() => {
+                setVisited(new Set());
+                setNotes({});
+                setExpanded(new Set());
+              }}
+            >
               Reset all
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <StationNoteDialog
+        station={dialogStation}
+        note={dialogStation ? notes[dialogStation] : undefined}
+        lineColour={line.colour}
+        lineTextColour={line.textColour}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSave={saveNote}
+      />
     </main>
   );
 }
