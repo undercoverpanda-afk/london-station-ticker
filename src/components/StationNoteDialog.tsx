@@ -87,7 +87,7 @@ export function StationNoteDialog({
       >
         <DialogContent
           
-          className="max-w-[480px] gap-0 overflow-hidden rounded-t-2xl p-0 max-sm:top-auto max-sm:bottom-0 max-sm:translate-y-0 max-sm:rounded-b-none sm:rounded-2xl"
+          className="top-auto bottom-0 left-1/2 w-full max-w-[480px] translate-x-[-50%] translate-y-0 gap-0 overflow-hidden rounded-t-2xl rounded-b-none p-0 sm:rounded-b-none"
         >
           <div
             className="px-5 py-4"

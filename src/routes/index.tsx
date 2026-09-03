@@ -119,10 +119,7 @@ function Index() {
     }
     if (notes[station]?.submitted) {
       toast("Previous note restored");
-      return;
     }
-    setDialogStation(station);
-    setDialogOpen(true);
   };
 
   const saveNote = (station: string, note: StationNote) => {
@@ -262,15 +259,17 @@ function Index() {
 
                 {isVisited && (
                   <div className="flex items-center gap-1 pr-2 pl-1">
-                    <button
-                      type="button"
-                      onClick={() => openNote(station)}
-                      aria-label={`Note for ${station}`}
-                      className="flex h-11 w-9 items-center justify-center"
-                      style={{ color: rowFg }}
-                    >
-                      <NotebookPen size={18} strokeWidth={2.2} />
-                    </button>
+                    {!hasNote && (
+                      <button
+                        type="button"
+                        onClick={() => openNote(station)}
+                        aria-label={`Note for ${station}`}
+                        className="flex h-11 w-9 items-center justify-center"
+                        style={{ color: rowFg }}
+                      >
+                        <NotebookPen size={18} strokeWidth={2.2} />
+                      </button>
+                    )}
                     {hasNote && (
                       <button
                         type="button"
