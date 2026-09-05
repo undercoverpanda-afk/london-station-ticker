@@ -20,13 +20,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tube Tracker — Tick off London Underground stations" },
+      { title: "Tube Ticker — Tick off London Underground stations" },
       {
         name: "description",
         content:
           "Track which London Underground stations you have visited, line by line. Works offline in your browser, no account needed.",
       },
-      { property: "og:title", content: "Tube Tracker — London Underground station tracker" },
+      { property: "og:title", content: "Tube Ticker — London Underground station tracker" },
       {
         property: "og:description",
         content:
@@ -156,18 +156,23 @@ function Index() {
   return (
     <main className="mx-auto min-h-screen w-full max-w-[480px] bg-white pb-24 font-sans antialiased">
       <header
-        className="sticky top-0 z-30 border-b px-5 py-3"
+        className="sticky top-0 z-30 flex items-center justify-between border-b px-5 py-3"
         style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
       >
-        <h1 className="text-[22px] font-bold tracking-tight text-black">Tube Tracker</h1>
-        <p className="text-[15px] font-normal tracking-tight text-neutral-600">
-          {totalVisited} of {ALL_STATIONS.length} stations visited
-        </p>
+        <div className="flex flex-col leading-none">
+          <span className="text-[28px] font-bold tracking-tight text-black">
+            {totalVisited}/{ALL_STATIONS.length}
+          </span>
+          <span className="mt-0.5 text-[13px] font-medium tracking-tight text-neutral-600">
+            stations visited
+          </span>
+        </div>
+        <h1 className="text-[22px] font-bold tracking-tight text-black">Tube Ticker</h1>
       </header>
 
       <nav
         aria-label="Tube lines"
-        className="no-scrollbar sticky top-[76px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
+        className="no-scrollbar sticky top-[68px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
       >
         {LINES.map((l, i) => {
           const active = i === activeIndex;
