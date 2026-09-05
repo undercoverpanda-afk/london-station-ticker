@@ -398,19 +398,9 @@ function Index() {
           );
         })}
       </ul>
+      </>
+      )}
 
-      <div
-        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center justify-end border-t px-4 py-3"
-        style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
-      >
-        <button
-          type="button"
-          onClick={() => setConfirmOpen(true)}
-          className="h-11 shrink-0 px-2 text-[15px] font-bold tracking-tight text-[#C31A18]"
-        >
-          Reset all
-        </button>
-      </div>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
