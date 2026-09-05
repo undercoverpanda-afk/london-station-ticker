@@ -159,7 +159,8 @@ function Index() {
         className="sticky top-0 z-30 flex items-center justify-between border-b px-5 py-3"
         style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
       >
-        <div className="flex flex-col leading-none">
+        <h1 className="text-[22px] font-bold tracking-tight text-black">Tube Ticker</h1>
+        <div className="flex flex-col items-end leading-none">
           <span className="text-[28px] font-bold tracking-tight text-black">
             {totalVisited}/{ALL_STATIONS.length}
           </span>
@@ -167,7 +168,6 @@ function Index() {
             stations visited
           </span>
         </div>
-        <h1 className="text-[22px] font-bold tracking-tight text-black">Tube Ticker</h1>
       </header>
 
       <nav
