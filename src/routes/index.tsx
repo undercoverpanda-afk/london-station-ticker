@@ -172,7 +172,7 @@ function Index() {
 
       <nav
         aria-label="Tube lines"
-        className="no-scrollbar sticky top-[76px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
+        className="no-scrollbar sticky top-[68px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
       >
         {LINES.map((l, i) => {
           const active = i === activeIndex;
