@@ -59,6 +59,7 @@ function Index() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showOptions, setShowOptions] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [flashed, setFlashed] = useState<string | null>(null);
 
