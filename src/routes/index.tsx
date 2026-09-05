@@ -176,7 +176,7 @@ function Index() {
         className="no-scrollbar sticky top-[68px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
       >
         {LINES.map((l, i) => {
-          const active = i === activeIndex;
+          const active = i === activeIndex && !showOptions;
           return (
             <button
               key={l.name}
