@@ -59,6 +59,7 @@ function Index() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showOptions, setShowOptions] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [flashed, setFlashed] = useState<string | null>(null);
 
@@ -175,12 +176,15 @@ function Index() {
         className="no-scrollbar sticky top-[68px] z-20 flex gap-2 overflow-x-auto bg-white px-4 py-2"
       >
         {LINES.map((l, i) => {
-          const active = i === activeIndex;
+          const active = i === activeIndex && !showOptions;
           return (
             <button
               key={l.name}
               type="button"
-              onClick={() => setActiveIndex(i)}
+              onClick={() => {
+                setActiveIndex(i);
+                setShowOptions(false);
+              }}
               aria-current={active ? "true" : undefined}
               className="h-10 shrink-0 rounded-lg px-3 text-[14px] font-bold tracking-tight transition-transform active:scale-95"
               style={
@@ -197,8 +201,42 @@ function Index() {
             </button>
           );
         })}
+        <button
+          type="button"
+          onClick={() => setShowOptions(true)}
+          aria-current={showOptions ? "true" : undefined}
+          className="h-10 shrink-0 rounded-lg px-3 text-[14px] font-bold tracking-tight transition-transform active:scale-95"
+          style={
+            showOptions
+              ? { backgroundColor: "#111111", color: "#FFFFFF" }
+              : {
+                  backgroundColor: "#FFFFFF",
+                  border: "1.5px solid #111111",
+                  color: "#111111",
+                }
+          }
+        >
+          Options
+        </button>
       </nav>
 
+      {showOptions ? (
+        <section className="px-5 py-8">
+          <h2 className="text-[18px] font-bold tracking-tight text-black">Options</h2>
+          <p className="mt-2 text-[15px] leading-snug text-neutral-600">
+            Clear every ticked station and its notes. This can&apos;t be undone.
+          </p>
+          <button
+            type="button"
+            onClick={() => setConfirmOpen(true)}
+            className="mt-4 h-11 rounded-lg border px-4 text-[15px] font-bold tracking-tight text-[#C31A18]"
+            style={{ borderColor: "#C31A18" }}
+          >
+            Reset all
+          </button>
+        </section>
+      ) : (
+      <>
       <section
         className="px-5 py-6"
         style={{ backgroundColor: line.colour, color: line.textColour }}
@@ -360,19 +398,9 @@ function Index() {
           );
         })}
       </ul>
+      </>
+      )}
 
-      <div
-        className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[480px] items-center justify-end border-t px-4 py-3"
-        style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
-      >
-        <button
-          type="button"
-          onClick={() => setConfirmOpen(true)}
-          className="h-11 shrink-0 px-2 text-[15px] font-bold tracking-tight text-[#C31A18]"
-        >
-          Reset all
-        </button>
-      </div>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
