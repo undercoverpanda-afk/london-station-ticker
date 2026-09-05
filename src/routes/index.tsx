@@ -237,9 +237,6 @@ function Index() {
         </section>
       ) : (
       <>
-      </>
-      )}
-
       <section
         className="px-5 py-6"
         style={{ backgroundColor: line.colour, color: line.textColour }}
