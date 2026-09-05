@@ -134,6 +134,8 @@
 
 @theme {
   --font-sans: "Public Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-johnston: "Johnston100", "P22 Underground", "Gill Sans Nova",
+    "Gill Sans MT", "Gill Sans", "Cabin", ui-sans-serif, sans-serif;
 }
 
 @layer base {
