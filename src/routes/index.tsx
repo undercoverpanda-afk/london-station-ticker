@@ -201,7 +201,44 @@ function Index() {
             </button>
           );
         })}
+        <button
+          type="button"
+          onClick={() => setShowOptions(true)}
+          aria-current={showOptions ? "true" : undefined}
+          className="h-10 shrink-0 rounded-lg px-3 text-[14px] font-bold tracking-tight transition-transform active:scale-95"
+          style={
+            showOptions
+              ? { backgroundColor: "#111111", color: "#FFFFFF" }
+              : {
+                  backgroundColor: "#FFFFFF",
+                  border: "1.5px solid #111111",
+                  color: "#111111",
+                }
+          }
+        >
+          Options
+        </button>
       </nav>
+
+      {showOptions ? (
+        <section className="px-5 py-8">
+          <h2 className="text-[18px] font-bold tracking-tight text-black">Options</h2>
+          <p className="mt-2 text-[15px] leading-snug text-neutral-600">
+            Clear every ticked station and its notes. This can&apos;t be undone.
+          </p>
+          <button
+            type="button"
+            onClick={() => setConfirmOpen(true)}
+            className="mt-4 h-11 rounded-lg border px-4 text-[15px] font-bold tracking-tight text-[#C31A18]"
+            style={{ borderColor: "#C31A18" }}
+          >
+            Reset all
+          </button>
+        </section>
+      ) : (
+      <>
+      </>
+      )}
 
       <section
         className="px-5 py-6"
