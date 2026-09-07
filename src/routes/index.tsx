@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { LINES, ALL_STATIONS } from "@/data/lines";
 import { bestContrast, tint } from "@/lib/utils";
 import tubeCar from "@/assets/tube-car-pixel.svg.asset.json";
+import tileBackground from "@/assets/tile-background.png.asset.json";
 import { StationNoteDialog, type StationNote } from "@/components/StationNoteDialog";
 import {
   AlertDialog,
