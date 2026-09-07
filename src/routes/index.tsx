@@ -159,7 +159,12 @@ function Index() {
     <main className="mx-auto min-h-screen w-full max-w-[480px] bg-white pb-24 font-sans antialiased">
       <header
         className="sticky top-0 z-30 flex items-center justify-between border-b px-5 py-3 font-johnston"
-        style={{ backgroundColor: "#EEEEEE", borderColor: "#D9D9D9" }}
+        style={{
+          backgroundColor: "#EEEEEE",
+          backgroundImage: `url(${tileBackground.url})`,
+          backgroundRepeat: "repeat",
+          borderColor: "#D9D9D9",
+        }}
       >
         <h1 className="text-[24px] font-semibold tracking-[0.01em] text-black">Tube Ticker</h1>
         <div className="flex flex-col items-end leading-none">
