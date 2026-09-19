@@ -28,7 +28,7 @@ export const LINES: TubeLine[] = [
     name: "District",
     colour: "#00782A",
     textColour: "#FFFFFF",
-    stations: ["Upminster","Upminster Bridge","Hornchurch","Elm Park","Dagenham East","Dagenham Heathway","Becontree","Upney","Barking","East Ham","Upton Park","Plaistow","West Ham","Bromley-by-Bow","Bow Road","Mile End","Stepney Green","Whitechapel","Aldgate East","Tower Hill","Monument","Cannon Street","Mansion House","Blackfriars","Temple","Embankment","Westminster","St James's Park","Victoria","Sloane Square","South Kensington","Gloucester Road","Earl's Court","West Brompton","Fulham Broadway","Parsons Green","Putney Bridge","East Putney","Southfields","Wimbledon Park","Wimbledon","West Kensington","Barons Court","Hammersmith","Ravenscourt Park","Stamford Brook","Turnham Green","Chiswick Park","Acton Town","South Ealing","Northfields","Boston Manor","Osterley","Hounslow East","Hounslow Central","Hounslow West","Gunnersbury","Kew Gardens","Richmond","Ealing Common","Ealing Broadway"]
+    stations: ["Ealing Broadway","Ealing Common","Richmond","Kew Gardens","Gunnersbury","Hounslow West","Hounslow Central","Hounslow East","Osterley","Boston Manor","Northfields","South Ealing","Acton Town","Chiswick Park","Turnham Green","Stamford Brook","Ravenscourt Park","Hammersmith","Barons Court","West Kensington","Wimbledon","Wimbledon Park","Southfields","East Putney","Putney Bridge","Parsons Green","Fulham Broadway","West Brompton","Earl's Court","Gloucester Road","South Kensington","Sloane Square","Victoria","St James's Park","Westminster","Embankment","Temple","Blackfriars","Mansion House","Cannon Street","Monument","Tower Hill","Aldgate East","Whitechapel","Stepney Green","Mile End","Bow Road","Bromley-by-Bow","West Ham","Plaistow","Upton Park","East Ham","Barking","Upney","Becontree","Dagenham Heathway","Dagenham East","Elm Park","Hornchurch","Upminster Bridge","Upminster"]
   },
   {
     name: "Hammersmith & City",
@@ -46,7 +46,7 @@ export const LINES: TubeLine[] = [
     name: "Metropolitan",
     colour: "#9B0056",
     textColour: "#FFFFFF",
-    stations: ["Aldgate","Liverpool Street","Moorgate","Barbican","Farringdon","King's Cross St Pancras","Euston Square","Great Portland Street","Baker Street","Finchley Road","Wembley Park","Preston Road","Northwick Park","Harrow-on-the-Hill","North Harrow","Pinner","Northwood","Northwood Hills","Moor Park","Rickmansworth","Chorleywood","Chalfont & Latimer","Chesham","Amersham","Croxley","Watford","Rayners Lane","Eastcote","Ruislip Manor","Ruislip","Ickenham","Hillingdon","Uxbridge"]
+    stations: ["Uxbridge","Hillingdon","Ickenham","Ruislip","Ruislip Manor","Eastcote","Rayners Lane","Watford","Croxley","Amersham","Chesham","Chalfont & Latimer","Chorleywood","Rickmansworth","Moor Park","Northwood Hills","Northwood","Pinner","North Harrow","Harrow-on-the-Hill","Northwick Park","Preston Road","Wembley Park","Finchley Road","Baker Street","Great Portland Street","Euston Square","King's Cross St Pancras","Farringdon","Barbican","Moorgate","Liverpool Street","Aldgate"]
   },
   {
     name: "Northern",
@@ -64,7 +64,7 @@ export const LINES: TubeLine[] = [
     name: "Victoria",
     colour: "#0098D4",
     textColour: "#FFFFFF",
-    stations: ["Brixton","Stockwell","Vauxhall","Pimlico","Victoria","Green Park","Oxford Circus","Warren Street","Euston","King's Cross St Pancras","Highbury & Islington","Finsbury Park","Seven Sisters","Tottenham Hale","Blackhorse Road","Walthamstow Central"]
+    stations: ["Walthamstow Central","Blackhorse Road","Tottenham Hale","Seven Sisters","Finsbury Park","Highbury & Islington","King's Cross St Pancras","Euston","Warren Street","Oxford Circus","Green Park","Victoria","Pimlico","Vauxhall","Stockwell","Brixton"]
   },
   {
     name: "Waterloo & City",
