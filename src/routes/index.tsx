@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { LINES, ALL_STATIONS } from "@/data/lines";
 import { bestContrast, tint } from "@/lib/utils";
 import tubeCar from "@/assets/tube-car-pixel.svg";
-import { StationNoteDialog, type StationNote } from "@/components/StationNoteDialog";
+import { StationNoteDialog, todayISO, type StationNote } from "@/components/StationNoteDialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -127,6 +127,15 @@ function Index() {
       });
       return;
     }
+    // Stamp the tick date so every visit carries one, even when the user never
+    // opens the note dialog. submitted stays false, so the row UI is unchanged and
+    // the dialog still invites a proper note (pre-filled with this date).
+    setNotes((prev) =>
+      prev[station]
+        ? prev
+        : { ...prev, [station]: { visitedOn: todayISO(), reason: "", submitted: false } },
+    );
+
     if (notes[station]?.submitted) {
       toast("Previous note restored");
     }
@@ -161,12 +170,14 @@ function Index() {
           narrow widths, so the tab bar cannot be pinned to a fixed offset. */}
       <div className="sticky top-0 z-30">
         <header className="tile-header border-b px-5 pt-4 pb-4" style={{ borderColor: "#D9D9D9" }}>
-          <h1 className="tile-title">Tube Ticker</h1>
-          <div className="mt-2 flex flex-col items-end">
-            <span className="tile-count">
-              {totalVisited}/{ALL_STATIONS.length}
-            </span>
-            <span className="tile-caption mt-1.5">stations visited</span>
+          <div className="flex items-baseline justify-between gap-3">
+            <h1 className="tile-title">Tube Ticker</h1>
+            <div className="flex shrink-0 flex-col items-end">
+              <span className="tile-count">
+                {totalVisited}/{ALL_STATIONS.length}
+              </span>
+              <span className="tile-caption mt-0.5">stations visited</span>
+            </div>
           </div>
         </header>
 
@@ -292,6 +303,7 @@ function Index() {
                   >
                     <button
                       type="button"
+                      aria-pressed={isVisited}
                       onClick={() => toggle(station)}
                       className="flex flex-1 items-center gap-3 py-3 pr-3 pl-5 text-left transition-transform duration-150 active:scale-[0.985]"
                     >
@@ -334,6 +346,7 @@ function Index() {
                     <button
                       type="button"
                       aria-pressed={isVisited}
+                      aria-label={`Mark ${station} as ${isVisited ? "not visited" : "visited"}`}
                       onClick={() => toggle(station)}
                       className="flex items-center gap-3 py-3 pr-5 pl-3 text-left transition-transform duration-150 active:scale-[0.985]"
                     >
