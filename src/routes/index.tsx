@@ -40,6 +40,24 @@ export const Route = createFileRoute("/")({
 const STORAGE_KEY = "tube-tracker-visited";
 const NOTES_KEY = "tube-tracker-notes";
 
+/*
+ * Inactive tabs sit on the tile-face cream and label themselves in their own
+ * line colour, which drops several lines below 4.5:1. Those carry a darkened,
+ * hue-preserving label; the border keeps the true line colour so the line is
+ * still identifiable. Ratios measured against #EDDFB8. Metropolitan, Northern
+ * and Piccadilly already clear 4.5:1 and are left alone.
+ */
+const INACTIVE_LABEL: Record<string, string> = {
+  Bakerloo: "#935104", // 4.63:1
+  Central: "#C11B14", // 4.61:1
+  Circle: "#756100", // 4.57:1
+  District: "#007328", // 4.55:1
+  "Hammersmith & City": "#A33D57", // 4.71:1
+  Jubilee: "#555A5E", // 5.26:1
+  Victoria: "#006992", // 4.61:1
+  "Waterloo & City": "#2F6B58", // 4.71:1
+};
+
 function formatDate(iso: string) {
   if (!iso) return "Date not recorded";
   const [y, m, d] = iso.split("-").map(Number);
@@ -169,7 +187,7 @@ function Index() {
       {/* Header and tab bar share one sticky container: the tiled title wraps at
           narrow widths, so the tab bar cannot be pinned to a fixed offset. */}
       <div className="sticky top-0 z-30">
-        <header className="tile-header border-b px-5 pt-4 pb-4" style={{ borderColor: "#D9D9D9" }}>
+        <header className="tile-header px-5 pt-4 pb-4">
           <div className="flex items-baseline justify-between gap-3">
             <h1 className="tile-title">Tube Ticker</h1>
             <div className="flex shrink-0 flex-col items-end">
@@ -183,7 +201,7 @@ function Index() {
 
         <nav
           aria-label="Tube lines"
-          className="no-scrollbar flex gap-2 overflow-x-auto bg-white px-4 py-2"
+          className="no-scrollbar flex gap-2 overflow-x-auto bg-tile-face px-4 py-2"
         >
           {LINES.map((l, i) => {
             const active = i === activeIndex && !showOptions;
@@ -201,9 +219,9 @@ function Index() {
                   active
                     ? { backgroundColor: l.colour, color: l.textColour }
                     : {
-                        backgroundColor: "#FFFFFF",
+                        backgroundColor: "transparent",
                         border: `1.5px solid ${l.colour}`,
-                        color: l.colour === "#FFD300" ? "#8a7200" : l.colour,
+                        color: INACTIVE_LABEL[l.name] ?? l.colour,
                       }
                 }
               >
@@ -220,7 +238,7 @@ function Index() {
               showOptions
                 ? { backgroundColor: "#111111", color: "#FFFFFF" }
                 : {
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: "transparent",
                     border: "1.5px solid #111111",
                     color: "#111111",
                   }
@@ -283,7 +301,7 @@ function Index() {
             )}
           </section>
 
-          <ul className="flex flex-col" style={{ backgroundColor: "#FFFFFF" }}>
+          <ul className="flex flex-col bg-tile-face">
             {lineStations.map((station) => {
               const isVisited = visited.has(station);
               const note = notes[station];
@@ -292,7 +310,7 @@ function Index() {
               const rowBg = isVisited ? line.colour : unvisitedBg;
               const rowFg = isVisited ? line.textColour : unvisitedText;
               return (
-                <li key={station} style={{ borderBottom: "1px solid #FFFFFF" }}>
+                <li key={station} className="border-b border-grout">
                   <div
                     className="flex min-h-16 w-full items-stretch"
                     style={{
