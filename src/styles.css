@@ -135,6 +135,7 @@
 @theme {
   --font-sans: "Public Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-johnston: "Falstaff", "Public Sans", ui-sans-serif, sans-serif;
+  --font-tile: "Playfair Display", "Bodoni Moda", Georgia, serif;
 }
 
 @layer base {
@@ -158,3 +159,137 @@
   }
 }
 
+/*
+ * Victorian tiled header.
+ *
+ * Every number below is measured from the tile-background asset (964x1362 PNG):
+ * 60x28 tile faces, 4px joints, running bond with the alternate course offset
+ * by half a pitch, faces #EDDFB8 on grout #C6B99E. Both the tile field and the
+ * grout overlay that crosses the lettering are generated from these tokens, so
+ * the two can never drift out of alignment.
+ */
+:root {
+  --tile-face: #eddfb8;
+  --grout-colour: #c6b99e;
+  --grout-w: 4px;
+  --tile-w: 60px;
+  --tile-h: 28px;
+  --tile-pitch-x: calc(var(--tile-w) + var(--grout-w));
+  --tile-pitch-y: calc(var(--tile-h) + var(--grout-w));
+  --tile-offset-x: calc(var(--tile-pitch-x) / 2);
+  --tile-glyph: #14110b;
+  --grout-glyph-alpha: 0.55;
+
+  /*
+   * Mask layers for one running-bond grout grid. A course-aligned grid cannot
+   * be drawn with plain background layers, because the vertical joints have to
+   * appear at x = offset on even courses and x = 0 on odd ones. Composited as
+   * ((odd XOR course) INTERSECT all-joints) UNION horizontals, these four
+   * stripes resolve to exactly that set of joints.
+   */
+  --grout-joints-h: repeating-linear-gradient(
+    to bottom,
+    #000 0 var(--grout-w),
+    transparent var(--grout-w) var(--tile-pitch-y)
+  );
+  --grout-joints-all-v: repeating-linear-gradient(
+    to right,
+    #000 0 var(--grout-w),
+    transparent var(--grout-w) var(--tile-offset-x)
+  );
+  --grout-course-band: repeating-linear-gradient(
+    to bottom,
+    #000 0 var(--tile-pitch-y),
+    transparent var(--tile-pitch-y) calc(var(--tile-pitch-y) * 2)
+  );
+  --grout-joints-odd-v: repeating-linear-gradient(
+    to right,
+    #000 0 var(--grout-w),
+    transparent var(--grout-w) var(--tile-pitch-x)
+  );
+}
+
+.tile-header {
+  position: relative;
+  /* Own stacking context, so the field sits above the header's own background
+     and below the type, and the overlay sits above the type. */
+  isolation: isolate;
+  background-color: var(--tile-face);
+}
+
+@supports (mask-composite: intersect) {
+  /* ::before is the tile field, under the type. ::after is the same grid at
+     reduced alpha, over the type, so the joints carry on across the glyphs.
+     Where the overlay lands on the field it lands on the field's own joints,
+     so the two composite back to the exact grout colour. */
+  .tile-header::before,
+  .tile-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--grout-colour);
+    mask-image:
+      var(--grout-joints-h), var(--grout-joints-all-v), var(--grout-course-band),
+      var(--grout-joints-odd-v);
+    mask-composite: add, intersect, exclude, add;
+  }
+
+  .tile-header::before {
+    z-index: -1;
+  }
+
+  .tile-header::after {
+    z-index: 1;
+    opacity: var(--grout-glyph-alpha);
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Flat dark type on cream: no field joints, no overlay. */
+  .tile-header::before,
+  .tile-header::after {
+    display: none;
+  }
+}
+
+.tile-title {
+  font-family: var(--font-tile);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--tile-glyph);
+  /* Cap height stays above one full course plus a joint at every width, so a
+     horizontal joint always crosses the letters rather than skimming past the
+     word. The line box is two courses, so a wrapped title shifts the type by a
+     whole number of courses and the joints stay in phase. */
+  font-size: clamp(52px, 14vw, 56px);
+  line-height: calc(var(--tile-pitch-y) * 2);
+  text-shadow:
+    0 -1px 0 rgb(255 255 255 / 0.3),
+    0 1px 0 rgb(0 0 0 / 0.4);
+}
+
+.tile-count {
+  font-family: var(--font-tile);
+  font-weight: 900;
+  font-size: clamp(44px, 12vw, 46px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--tile-glyph);
+  text-shadow:
+    0 -1px 0 rgb(255 255 255 / 0.3),
+    0 1px 0 rgb(0 0 0 / 0.4);
+}
+
+.tile-caption {
+  /* Below the 28px floor for the inlay, so it paints above the overlay and
+     keeps clean letterforms. */
+  position: relative;
+  z-index: 2;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  color: var(--tile-glyph);
+}

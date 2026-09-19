@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 21" width="384" height="126" shape-rendering="crispEdges" role="img" aria-label="Pixel art London Underground tube car">
+  <title>Pixel tube car</title>
+
+  <!-- roof -->
+  <rect x="4" y="0" width="59" height="1" fill="#8E9295"/>
+  <rect x="3" y="1" width="60" height="1" fill="#C3C7CA"/>
+  <rect x="2" y="2" width="61" height="1" fill="#9DA1A4"/>
+  <g fill="#8E9295">
+    <rect x="10" y="1" width="1" height="1"/>
+    <rect x="18" y="1" width="1" height="1"/>
+    <rect x="26" y="1" width="1" height="1"/>
+    <rect x="34" y="1" width="1" height="1"/>
+    <rect x="42" y="1" width="1" height="1"/>
+    <rect x="50" y="1" width="1" height="1"/>
+    <rect x="58" y="1" width="1" height="1"/>
+  </g>
+
+  <!-- body shell -->
+  <rect x="1" y="3" width="62" height="13" fill="#F5F5F5"/>
+  <rect x="1" y="15" width="62" height="1" fill="#D8D8D8"/>
+
+  <!-- cab nose (stepped for pixel bevel) -->
+  <rect x="4" y="3" width="5" height="1" fill="#E1251B"/>
+  <rect x="3" y="4" width="6" height="1" fill="#E1251B"/>
+  <rect x="2" y="5" width="7" height="1" fill="#E1251B"/>
+  <rect x="1" y="6" width="8" height="10" fill="#E1251B"/>
+  <!-- windscreen -->
+  <rect x="3" y="6" width="3" height="1" fill="#3B3B3B"/>
+  <rect x="2" y="7" width="4" height="5" fill="#3B3B3B"/>
+  <rect x="2" y="7" width="1" height="4" fill="#6E7276"/>
+  <!-- cab door light cluster -->
+  <rect x="7" y="9" width="1" height="3" fill="#2B2B2B"/>
+
+  <!-- blue skirt on white panels -->
+  <g fill="#10069F">
+    <rect x="9" y="12" width="9" height="4"/>
+    <rect x="28" y="12" width="13" height="4"/>
+    <rect x="51" y="12" width="10" height="4"/>
+  </g>
+
+  <!-- door bays -->
+  <g fill="#E1251B">
+    <rect x="18" y="3" width="10" height="13"/>
+    <rect x="41" y="3" width="10" height="13"/>
+    <rect x="61" y="3" width="2" height="13"/>
+  </g>
+  <g fill="#111111">
+    <rect x="22" y="3" width="1" height="13"/>
+    <rect x="45" y="3" width="1" height="13"/>
+    <rect x="18" y="3" width="1" height="13" opacity="0.35"/>
+    <rect x="27" y="3" width="1" height="13" opacity="0.35"/>
+    <rect x="41" y="3" width="1" height="13" opacity="0.35"/>
+    <rect x="50" y="3" width="1" height="13" opacity="0.35"/>
+  </g>
+  <!-- door glass -->
+  <g fill="#3B3B3B">
+    <rect x="19" y="5" width="3" height="6"/>
+    <rect x="23" y="5" width="3" height="6"/>
+    <rect x="42" y="5" width="3" height="6"/>
+    <rect x="46" y="5" width="3" height="6"/>
+  </g>
+  <!-- door sill strip -->
+  <g fill="#EFE7B8">
+    <rect x="18" y="15" width="10" height="1"/>
+    <rect x="41" y="15" width="10" height="1"/>
+  </g>
+
+  <!-- saloon windows -->
+  <g fill="#3B3B3B">
+    <rect x="11" y="6" width="6" height="5"/>
+    <rect x="30" y="7" width="9" height="4"/>
+    <rect x="53" y="6" width="7" height="5"/>
+  </g>
+  <g fill="#5A5E62">
+    <rect x="11" y="6" width="6" height="1"/>
+    <rect x="30" y="7" width="9" height="1"/>
+    <rect x="53" y="6" width="7" height="1"/>
+  </g>
+
+  <!-- roundel + destination blind -->
+  <rect x="34" y="3" width="2" height="1" fill="#E1251B"/>
+  <rect x="34" y="3" width="1" height="1" fill="#F5F5F5"/>
+  <rect x="31" y="5" width="7" height="1" fill="#111111"/>
+  <rect x="32" y="5" width="5" height="1" fill="#F58220"/>
+
+  <!-- grilles -->
+  <g fill="#9DA1A4">
+    <rect x="12" y="11" width="2" height="1"/>
+    <rect x="15" y="11" width="2" height="1"/>
+    <rect x="31" y="11" width="2" height="1"/>
+    <rect x="36" y="11" width="2" height="1"/>
+    <rect x="54" y="11" width="2" height="1"/>
+    <rect x="58" y="11" width="2" height="1"/>
+  </g>
+
+  <!-- underframe -->
+  <rect x="5" y="16" width="55" height="2" fill="#1A1A1A"/>
+  <g fill="#EFE7B8">
+    <rect x="20" y="16" width="4" height="1"/>
+    <rect x="33" y="16" width="6" height="1"/>
+  </g>
+
+  <!-- bogies -->
+  <g fill="#111111">
+    <rect x="8" y="17" width="10" height="2"/>
+    <rect x="47" y="17" width="10" height="2"/>
+    <rect x="9" y="19" width="3" height="2"/>
+    <rect x="14" y="19" width="3" height="2"/>
+    <rect x="48" y="19" width="3" height="2"/>
+    <rect x="53" y="19" width="3" height="2"/>
+  </g>
+  <g fill="#6E7276">
+    <rect x="10" y="20" width="1" height="1"/>
+    <rect x="15" y="20" width="1" height="1"/>
+    <rect x="49" y="20" width="1" height="1"/>
+    <rect x="54" y="20" width="1" height="1"/>
+  </g>
+</svg>
